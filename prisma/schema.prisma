@@ -1,0 +1,90 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+    user_id  String @id @default(uuid())
+    user_login  String @unique
+    user_email  String @unique
+    user_name  String
+    user_picture  String?
+    user_password  String
+
+    servers  Server[]
+    members Member[]
+    channels  Channel[]
+
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+model Server {
+    server_id  String @id @default(uuid())
+    server_name  String
+    server_picture  String? @db.Text
+    server_invite_code String @db.Text
+    server_description  String?
+
+    server_owner  String
+    profile User @relation(fields: [server_owner], references: [user_id], onDelete: Cascade)
+
+    members Member[]
+    channels  Channel[]
+
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([server_owner])
+}
+
+enum MemberRole {
+    ADMIN
+    MODERATOR
+    GUEST
+}
+
+model Member {
+    member_id String @id @default(uuid())
+    member_role MemberRole @default(GUEST)
+
+    user_id  String
+    profile User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+    server_id  String
+    server Server @relation(fields: [server_id], references: [server_id], onDelete: Cascade)
+
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([user_id])
+    @@index([server_id])
+}
+
+enum ChannelType {
+    TEXT
+    AUDIO
+    VIDEO
+}
+
+model Channel {
+    channel_id  String @id @default(uuid())
+    channel_name  String
+    channel_type  ChannelType
+
+    user_id  String
+    profile User @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+
+    server_id  String
+    server Server @relation(fields: [server_id], references: [server_id], onDelete: Cascade)
+
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    @@index([user_id])
+    @@index([server_id])
+}
