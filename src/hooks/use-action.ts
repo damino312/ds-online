@@ -1,3 +1,4 @@
+"use client";
 import { useState, useCallback } from "react";
 
 import { ActionState, FieldErrors } from "@/lib/create-safe-action";
@@ -52,7 +53,6 @@ export const useAction = <TInput, TOutput>(
     },
     [action, options]
   );
-
   return {
     execute,
     fieldErrors,

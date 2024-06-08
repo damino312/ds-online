@@ -20,27 +20,28 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log(123);
         if (!credentials?.login || !credentials?.password) {
           return null;
         }
         const user = await db.user.findFirst({
           where: {
-            login: credentials.login,
+            user_login: credentials.login,
           },
         });
         if (!user) {
           return null;
         }
-        const match = await compare(credentials.password, user.password);
+        const match = await compare(credentials.password, user.user_password);
         if (!match) {
           return null;
         }
+
         return {
-          user_id: user.user_id,
-          login: user.login,
-          role_id: user.role_id,
-          group_id: user.group_id,
-        } as any; // костыль, я не нашел как перезаписать defaultUser type
+          id: user.user_id, // Add this line to include the 'id' property
+          login: user.user_login,
+          picture: user.user_picture,
+        };
       },
     }),
   ],
@@ -48,10 +49,9 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       // When user signs in, add their information to the token
       if (user) {
-        token.user_id = user.user_id; // Make sure it matches what you return in 'authorize'
+        token.id = user.id; // Make sure it matches what you return in 'authorize'
         token.login = user.login;
-        token.role_id = user.role_id;
-        token.group_id = user.group_id;
+        token.picture = user.picture;
       }
       return token;
     },
@@ -59,10 +59,6 @@ export const authOptions: NextAuthOptions = {
       // Assign the user information to the session object
       session.user = {
         ...session.user,
-        user_id: token.user_id,
-        login: token.login,
-        role_id: token.role_id,
-        group_id: token.group_id,
       };
       return session;
     },
