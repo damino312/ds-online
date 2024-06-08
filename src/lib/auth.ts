@@ -20,7 +20,6 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        console.log(123);
         if (!credentials?.login || !credentials?.password) {
           return null;
         }
@@ -41,6 +40,7 @@ export const authOptions: NextAuthOptions = {
           id: user.user_id, // Add this line to include the 'id' property
           login: user.user_login,
           picture: user.user_picture,
+          name: user.user_name,
         };
       },
     }),
@@ -52,6 +52,7 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id; // Make sure it matches what you return in 'authorize'
         token.login = user.login;
         token.picture = user.picture;
+        token.name = user.name;
       }
       return token;
     },
