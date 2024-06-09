@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { Server } from "@prisma/client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface SidebarServerBtnProps {
   server: Server;
@@ -10,12 +11,14 @@ interface SidebarServerBtnProps {
 }
 
 const SidebarServerBtn = ({ server, className }: SidebarServerBtnProps) => {
+  const router = useRouter();
   return (
     <button
       className={cn(
         "w-12 h-12 flex justify-center items-center rounded-full overflow-hidden",
         className
       )}
+      onClick={() => router.push(`/app/server/${server?.server_id}`)}
     >
       {server?.server_picture ? (
         <Image
@@ -26,7 +29,7 @@ const SidebarServerBtn = ({ server, className }: SidebarServerBtnProps) => {
           style={{ objectFit: "cover" }}
         />
       ) : (
-        <span className="text-black font-semibold">
+        <span className="text-black font-semibold bg-white w-full h-full flex items-center justify-center">
           {server?.server_name?.toUpperCase()[0] || "S"}
         </span>
       )}

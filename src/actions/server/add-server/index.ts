@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { v4 as uuidv4 } from "uuid";
 import { ChannelType, MemberRole } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await getServerSession(authOptions);
@@ -16,7 +17,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   const user = session.user;
 
   const { server_name, server_picture } = data;
-  if (!server_name || !server_picture) {
+  if (!server_name) {
     return {
       error: "Incomplete data",
     };
@@ -43,6 +44,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
         },
       },
     });
+    revalidatePath("/app");
   } catch (error) {
     console.error(error);
     return {
