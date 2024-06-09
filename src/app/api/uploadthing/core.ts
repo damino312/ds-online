@@ -18,7 +18,7 @@ export const ourFileRouter = {
       return { userId: !session?.user?.name };
     })
     .onUploadComplete(() => {}),
-  messageFile: f(['image', 'pdf'])
+  messageFile: f(["image", "pdf"])
     .middleware(async () => {
       const session = await handleAuth();
       return { userId: !session?.user?.name };

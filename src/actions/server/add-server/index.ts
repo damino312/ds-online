@@ -4,9 +4,9 @@ import { InputType, ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { AddServer } from "./schema";
-import { v4 as uuidv4 } from "uuid";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { v4 as uuidv4 } from "uuid";
 import { ChannelType, MemberRole } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {

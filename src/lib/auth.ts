@@ -60,6 +60,8 @@ export const authOptions: NextAuthOptions = {
       // Assign the user information to the session object
       session.user = {
         ...session.user,
+        id: token.id,
+        login: token.login,
       };
       return session;
     },
