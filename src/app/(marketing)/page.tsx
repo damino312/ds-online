@@ -1,11 +1,16 @@
-"use client";
-
 import { Button } from "@/_components/ui/button";
-import { useRouter } from "next/navigation";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  const router = useRouter();
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
 
+  if (userId) {
+    redirect("/app");
+  }
   return (
     <div className="flex flex-col justify-between h-screen bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500 ">
       <header className="p-4 bg-white/70 backdrop-blur-lg shadow-md">
@@ -13,18 +18,18 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-gray-800">Discord Clone</h1>
           <nav className="flex space-x-4">
             <Button
-              onClick={() => router.push("/about")}
               className="text-gray-700 hover:text-gray-900"
               variant="link"
+              asChild
             >
-              About
+              <Link href="/about">About</Link>
             </Button>
             <Button
-              onClick={() => router.push("/contact")}
+              asChild
               className="text-gray-700 hover:text-gray-900"
               variant="link"
             >
-              Contact
+              <Link href="/contact">Contact</Link>
             </Button>
           </nav>
         </div>
@@ -46,18 +51,18 @@ export default function Home() {
           </h1>
           <div className="mt-4 flex justify-end">
             <Button
-              onClick={() => router.push("/sign-in")}
               className="mr-4 px-6 bg-purple-500 text-white hover:bg-purple-600"
               variant="default"
+              asChild
             >
-              Sign in
+              <Link href={"/sign-in"}>Sign in</Link>
             </Button>
             <Button
-              onClick={() => router.push("/sign-up")}
               className="ml-4 px-6 bg-indigo-500 text-white hover:bg-indigo-700"
               variant="default"
+              asChild
             >
-              Sign up
+              <Link href={"/sign-up"}>Sign up</Link>
             </Button>
           </div>
         </div>

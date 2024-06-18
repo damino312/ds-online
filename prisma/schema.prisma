@@ -19,8 +19,8 @@ model User {
     members Member[]
     channels  Channel[]
 
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
 }
 
 model Server {
@@ -36,8 +36,8 @@ model Server {
     members Member[]
     channels  Channel[]
 
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
 
     @@index([server_owner])
 }
@@ -58,8 +58,8 @@ model Member {
     server_id  String
     server Server @relation(fields: [server_id], references: [server_id], onDelete: Cascade)
 
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
 
     @@index([user_id])
     @@index([server_id])
@@ -82,8 +82,8 @@ model Channel {
     server_id  String
     server Server @relation(fields: [server_id], references: [server_id], onDelete: Cascade)
 
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
 
     @@index([user_id])
     @@index([server_id])

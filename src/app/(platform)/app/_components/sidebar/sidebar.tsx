@@ -1,21 +1,22 @@
 "use client";
 import { Separator } from "@/_components/ui/separator";
-import AddServerBtn from "./sidebar/add-server-btn";
-import UserIcon from "./user-icon";
+import AddServerBtn from "./add-server-btn";
+import UserIcon from "../user-icon";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { AuthUser } from "@/types/next-auth";
 import DialogueComponent from "@/_components/dialogue-component";
 import { FormInput } from "@/_components/form/form-input";
 import { FormSubmit } from "@/_components/form/form-submit";
-import FileUpload from "./file-upload";
+import FileUpload from "../file-upload";
 import Image from "next/image";
 import { X } from "lucide-react";
 import { useAction } from "@/hooks/use-action";
 import { addServer } from "@/actions/server/add-server";
 import { useToast } from "@/_components/ui/use-toast";
 import { Member, Server } from "@prisma/client";
-import SidebarServerBtn from "./sidebar/sidebard-server-btn";
+import SidebarItem from "./sidebar-item";
+import { ModeToggle } from "@/_components/mode-toggle";
 
 interface SidebarProps {
   servers: (Server & { members: Member[] })[];
@@ -79,12 +80,14 @@ const Sidebar = ({ servers }: SidebarProps) => {
   }
 
   return (
-    <div className="h-screen w-20 bg-black flex flex-col items-center pt-4 pb-6">
+    <div className="h-screen w-20 dark:bg-[#1c1e20] bg-[#dee1e2] flex flex-col items-center pt-4 pb-6">
       <div
         ref={scrollContainerRef}
-        className="h-full overflow-hidden scrollbar-hide "
+        className="h-full w-full overflow-hidden scrollbar-hide "
       >
-        <AddServerBtn setOpenModal={() => setOpenModal(true)} />
+        <div className="w-full flex justify-center">
+          <AddServerBtn setOpenModal={() => setOpenModal(true)} />
+        </div>
         <DialogueComponent
           title="Add Server"
           description="Give your server a personality with a name and an image. You can always change it later"
@@ -126,15 +129,19 @@ const Sidebar = ({ servers }: SidebarProps) => {
             </FormSubmit>
           </form>
         </DialogueComponent>
-        <Separator className="w-12 mt-3 h-0.5 bg-zinc-900" />
+        <div className="flex justify-center">
+          <Separator className="w-12 my-2 h-0.5 dark:bg-white bg-zinc-900 rounded-sm" />
+        </div>
+
         {servers.map((server) => (
-          <SidebarServerBtn
-            className="mt-4"
+          <SidebarItem
+            className="mb-4"
             key={server.server_id}
             server={server}
           />
         ))}
       </div>
+      <ModeToggle />
       <div className="mt-4">
         <UserIcon user={user} />
       </div>

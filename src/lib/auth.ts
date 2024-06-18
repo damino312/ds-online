@@ -35,11 +35,9 @@ export const authOptions: NextAuthOptions = {
         if (!match) {
           return null;
         }
-
         return {
           id: user.user_id, // Add this line to include the 'id' property
           login: user.user_login,
-          picture: user.user_picture,
           name: user.user_name,
         };
       },
@@ -51,13 +49,27 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id; // Make sure it matches what you return in 'authorize'
         token.login = user.login;
-        token.picture = user.picture;
-        token.name = user.name;
       }
       return token;
     },
     async session({ session, token }) {
       // Assign the user information to the session object
+      const user = await db.user.findUnique({
+        where: {
+          user_id: token.id,
+        },
+        select: {
+          user_login: true,
+        },
+      });
+
+      if (!user) {
+        session.user = null;
+        console.log(session);
+
+        return session;
+      }
+
       session.user = {
         ...session.user,
         id: token.id,

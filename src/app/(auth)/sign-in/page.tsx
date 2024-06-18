@@ -5,9 +5,11 @@ import { Button } from "@/_components/ui/button";
 import { useToast } from "@/_components/ui/use-toast";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const { toast } = useToast();
+  const router = useRouter();
 
   const onSignIn = async (formData: FormData) => {
     const login = formData.get("login");
@@ -15,19 +17,22 @@ const LoginPage = () => {
     const response = await signIn("credentials", {
       login: String(login),
       password: String(password),
-      callbackUrl: "/app",
+      redirect: false,
     });
     if (response?.ok === true) {
       toast({
         description: "You have successfully signed in",
       });
+      router.push("/app");
     } else if (response?.ok === false) {
       toast({
         description: "Wrong login or password",
+        variant: "destructive",
       });
     } else {
       toast({
         description: "Something went wrong",
+        variant: "destructive",
       });
     }
   };

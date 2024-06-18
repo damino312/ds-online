@@ -1,7 +1,17 @@
-const AddServerBtn = ({ setOpenModal }: { setOpenModal: () => void }) => {
+import { cn } from "@/lib/utils";
+
+interface AddServerBtnProps {
+  className?: string;
+  setOpenModal: () => void;
+}
+
+const AddServerBtn = ({ className, setOpenModal }: AddServerBtnProps) => {
   return (
     <button
-      className="w-12 h-12 flex justify-center items-center bg-zinc-900 hover:bg-emerald-600 rounded-3xl hover:rounded-lg transition-[border-radius] duration-300 ease-in-out"
+      className={cn(
+        "w-12 h-12 flex justify-center items-center dark:bg-zinc-700 dark:hover:bg-emerald-600 bg-transparent hover:bg-emerald-600 rounded-3xl hover:rounded-lg transition-[border-radius] duration-300 ease-in-out",
+        className
+      )}
       onClick={setOpenModal}
     >
       <svg

@@ -13,7 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       storageKey="ds-theme"
       disableTransitionOnChange
     >
-      <SessionProvider>
+      <SessionProvider refetchInterval={5 * 60}>
         <Toaster />
         {children}
       </SessionProvider>
