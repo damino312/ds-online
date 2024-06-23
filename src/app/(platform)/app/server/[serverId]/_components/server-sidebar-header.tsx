@@ -9,6 +9,7 @@ import { ServerWithMembersWithUsers } from "@/types/types";
 import { MemberRole } from "@prisma/client";
 import {
   ChevronDown,
+  LogOut,
   PlusCircle,
   Settings,
   TrashIcon,
@@ -35,33 +36,39 @@ const ServerSidebarHeader = ({ server, role }: ServerSidebarHeaderProps) => {
       <DropdownMenuContent className="w-52">
         {isModerator && (
           <DropdownMenuItem className="text-indigo-60  dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer flex">
-            Invite people
+            Invite People
             <UserPlus className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
           <DropdownMenuItem className=" px-3 py-2 text-sm cursor-pointer">
-            Server settings
+            Server Settings
             <Settings className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isAdmin && (
           <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
-            Manage members
+            Manage Members
             <Users className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isModerator && (
           <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer">
-            Create channel
+            Create Channel
             <PlusCircle className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
         {isModerator && <DropdownMenuSeparator />}
         {isAdmin && (
           <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer text-red-600">
-            Delete server
+            Delete Server
             <TrashIcon className="h-4 w-4 ml-auto" />
+          </DropdownMenuItem>
+        )}
+        {!isAdmin && (
+          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer text-red-600">
+            Leave Server
+            <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
       </DropdownMenuContent>
