@@ -2,8 +2,8 @@
 
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "../_components/ui/toaster";
-import { ThemeProvider } from "@/_components/theme-provider";
 import ModalProvider from "./providers/modal-provider";
+import { ThemeProvider } from "./providers/theme-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

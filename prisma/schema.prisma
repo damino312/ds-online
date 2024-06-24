@@ -27,7 +27,7 @@ model Server {
     server_id  String @id @default(uuid())
     server_name  String
     server_picture  String? @db.Text
-    server_invite_code String @db.Text
+    server_invite_code String @db.Text @unique
     server_description  String?
 
     server_owner  String
