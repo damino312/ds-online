@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { useModal } from "@/hooks/use-modal-store";
 import { useOrigin } from "@/hooks/use-origin";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
 import { Copy, CopyCheck } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
 
-const CreateInvitationModal = () => {
+const ManageMembersModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const origin = useOrigin();
   const [saved, setSaved] = useState(false);
@@ -24,7 +24,7 @@ const CreateInvitationModal = () => {
       timer && clearTimeout(timer);
     };
   }, [saved]);
-  const isModalOpen = isOpen && type === "invite";
+  const isModalOpen = isOpen && type === "members";
 
   if (!isModalOpen) return null;
 
@@ -35,7 +35,7 @@ const CreateInvitationModal = () => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Invite friends</DialogTitle>
+          <DialogTitle>Manage members</DialogTitle>
           <div className="text-left">
             <Label>Server Invite Url</Label>
             <p className="text-sm text-muted-foreground mt-2 mb-2">
@@ -62,4 +62,4 @@ const CreateInvitationModal = () => {
   );
 };
 
-export default CreateInvitationModal;
+export default ManageMembersModal;

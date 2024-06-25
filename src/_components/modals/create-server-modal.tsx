@@ -7,15 +7,15 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "./ui/dialog";
+} from "@/_components/ui/dialog";
 import { useModal } from "@/hooks/use-modal-store";
 import { useAction } from "@/hooks/use-action";
-import { useToast } from "./ui/use-toast";
+import { useToast } from "@/_components/ui/use-toast";
 import { addServer } from "@/actions/server/add-server";
 import Image from "next/image";
 import FileUpload from "@/app/(platform)/app/_components/file-upload";
-import { FormInput } from "./form/form-input";
-import { FormSubmit } from "./form/form-submit";
+import { FormInput } from "@/_components/form/form-input";
+import { FormSubmit } from "@/_components/form/form-submit";
 import { X } from "lucide-react";
 
 const CreateServerModal = () => {
