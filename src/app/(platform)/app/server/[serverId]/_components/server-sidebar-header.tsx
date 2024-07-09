@@ -9,7 +9,7 @@ import {
 } from "@/_components/ui/dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
 import { ServerWithMembersWithUsers } from "@/types/types";
-import { MemberRole } from "@prisma/client";
+import { Member, MemberRole } from "@prisma/client";
 import {
   ChevronDown,
   LogOut,
@@ -23,9 +23,14 @@ import {
 interface ServerSidebarHeaderProps {
   server: ServerWithMembersWithUsers;
   role?: MemberRole;
+  members?: Member[];
 }
 
-const ServerSidebarHeader = ({ server, role }: ServerSidebarHeaderProps) => {
+const ServerSidebarHeader = ({
+  server,
+  role,
+  members,
+}: ServerSidebarHeaderProps) => {
   const { onOpen } = useModal();
 
   const isAdmin = role === MemberRole.ADMIN;
