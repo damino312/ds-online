@@ -31,6 +31,7 @@ const CreateServerModal = () => {
         description: 'Server "' + data.server_name + '" created successfully',
       });
       setUploadedPicture(null);
+      onClose();
     },
     onError: (error) => {
       console.error(error);

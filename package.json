@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "@uploadthing/react": "^6.6.0",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

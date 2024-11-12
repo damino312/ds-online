@@ -22,10 +22,10 @@ const SidebarItem = ({ server, className }: SidebarItemProps) => {
     >
       <div
         className={cn(
-          "w-1 dark:bg-white bg-zinc-900 absolute left-0 top-1/2 -translate-y-1/2 rounded-r-md",
-          params.serverId === server?.server_id
-            ? "h-full"
-            : "h-1/4 group-hover:scale-y-150 transition"
+          "w-1 dark:bg-white bg-zinc-900 absolute left-0 top-1/2 -translate-y-1/2 rounded-r-md transition-all duration-300",
+          params.serverId === server.server_id
+            ? "h-full scale-y-100"
+            : "h-1/4 scale-y-150 group-hover:scale-y-150"
         )}
       ></div>
       <button

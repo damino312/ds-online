@@ -1,17 +1,13 @@
 "use client";
-
 import { useModal } from "@/hooks/use-modal-store";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { MemberRole } from "@prisma/client";
-import { ShieldAlertIcon } from "lucide-react";
+import { Check, GavelIcon, Loader2Icon, MoreVertical, ShieldAlertIcon, ShieldQuestion } from "lucide-react";
 import {
   DropdownMenu,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuPortal,
@@ -20,9 +16,40 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "../ui/dropdown-menu";
+import { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { useAction } from '@/hooks/use-action';
+import { changeRole } from '@/actions/member/change-role';
+import { toast } from '../ui/use-toast';
 
 const ManageMembersModal = () => {
-  const { isOpen, onClose, type, data } = useModal();
+  const router = useRouter()
+  const { isOpen, onClose, type, data, onOpen  } = useModal();
+  const [isLoadingId, setIsLoadingId] = useState('')
+
+  const { execute } = useAction(changeRole, {
+    onSuccess: (updatedMember) => {
+      setIsLoadingId('')
+      toast({
+        title: "Role changed",
+        // description: 'Server "' + data.server_name + '" created successfully',
+      });
+      const member = server?.members?.find((member) => member.member_id === updatedMember.member_id);
+      if (member) {
+        member.member_role = updatedMember.member_role;
+      }
+      onOpen( "members", { server })
+    },
+    onError: (error) => {
+      setIsLoadingId('')
+      console.error(error);
+      toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+      });
+    },
+  });
 
   const isModalOpen = isOpen && type === "members";
 
@@ -31,11 +58,20 @@ const ManageMembersModal = () => {
   const { server } = data;
   const members = server?.members;
 
+  const onRoleChange = (memberId: string, role: MemberRole) => {
+    setIsLoadingId(memberId)
+    execute({
+      serverId: server?.server_id as string,
+      memberId: memberId,
+      role: role
+    })
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className="bg-slate-100 night:bg-slate-100">
         <DialogHeader>
-          <DialogTitle className="mb-4">Manage members</DialogTitle>
+          <DialogTitle className="mb-4 text-black">Manage members</DialogTitle>
           {members
             ?.sort((a, b) =>
               a.profile.user_name.localeCompare(b.profile.user_name)
@@ -45,7 +81,7 @@ const ManageMembersModal = () => {
               return (
                 <div
                   key={member.member_id}
-                  className="w-full px-3 py-1 bg-slate-100  rounded-xl flex items-center justify-between"
+                  className="w-full px-3 py-1 bg-slate-100 night:bg-slate-100  rounded-xl flex items-center justify-between"
                 >
                   <div className="flex gap-4 items-center text-sm">
                     <Avatar>
@@ -61,68 +97,53 @@ const ManageMembersModal = () => {
                         {member.member_role === MemberRole.ADMIN && (
                           <ShieldAlertIcon className="h-4 stroke-red-600" />
                         )}
+                        {member.member_role === MemberRole.MODERATOR && (
+                          <ShieldAlertIcon className="h-4 stroke-blue-600" />
+                        )}
                       </span>
                       <span className="text-gray-600">
                         {profile.user_email}
                       </span>
                     </div>
                   </div>
-                  <DropdownMenu>
+                  {isLoadingId === member.member_id ? <Loader2Icon className="w-6 h-6 animate-spin text-black "/> : <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <DotsVerticalIcon />
+                      <MoreVertical className="text-black night:text-black" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                          Profile
-                          <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          Billing
-                          <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          Settings
-                          <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          Keyboard shortcuts
-                          <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuGroup>
-                        <DropdownMenuItem>Team</DropdownMenuItem>
-                        <DropdownMenuSub>
-                          <DropdownMenuSubTrigger>
-                            Invite users
-                          </DropdownMenuSubTrigger>
-                          <DropdownMenuPortal>
-                            <DropdownMenuSubContent>
-                              <DropdownMenuItem>Email</DropdownMenuItem>
-                              <DropdownMenuItem>Message</DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem>More...</DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                          </DropdownMenuPortal>
-                        </DropdownMenuSub>
-                        <DropdownMenuItem>
-                          New Team
-                          <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-                        </DropdownMenuItem>
-                      </DropdownMenuGroup>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>GitHub</DropdownMenuItem>
-                      <DropdownMenuItem>Support</DropdownMenuItem>
-                      <DropdownMenuItem disabled>API</DropdownMenuItem>
-                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel>Settings</DropdownMenuLabel>
+                      <DropdownMenuSub>
+                        <DropdownMenuSubTrigger className="flex items-center">
+                          <ShieldQuestion className="w-4 h-4 mr-2" />
+                          <span>Role</span>
+                        </DropdownMenuSubTrigger>
+                        <DropdownMenuPortal>
+                          <DropdownMenuSubContent>
+                            <DropdownMenuItem onClick={() => onRoleChange(member.member_id, MemberRole.GUEST)}>
+                              <ShieldQuestion className="w-4 h-4 mr-2" />
+                              Guest
+                              {member.member_role === MemberRole.GUEST && (
+                                <Check className="w-4 h-4 ml-auto"/>
+                              )}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onRoleChange(member.member_id, MemberRole.MODERATOR)}>
+                              <ShieldQuestion className="w-4 h-4 mr-2" />
+                              Moderator
+                              {member.member_role === MemberRole.MODERATOR && (
+                                <Check className="w-4 h-4 ml-auto"/>
+                              )}
+                            </DropdownMenuItem>
+                          </DropdownMenuSubContent>
+                        </DropdownMenuPortal>
+                      </DropdownMenuSub>
+                      <DropdownMenuSeparator/>
                       <DropdownMenuItem>
-                        Log out
-                        <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                        <GavelIcon className="w-4 h-4 mr-2"/>
+                        Kick
                       </DropdownMenuItem>
                     </DropdownMenuContent>
-                  </DropdownMenu>
+                  </DropdownMenu> }
+                  
                 </div>
               );
             })}
