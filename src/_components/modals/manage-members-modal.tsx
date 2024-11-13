@@ -69,7 +69,7 @@ const ManageMembersModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-slate-100 night:bg-slate-100">
+      <DialogContent className=" bg-slate-100 dark:bg-slate-200">
         <DialogHeader>
           <DialogTitle className="mb-4 text-black">Manage members</DialogTitle>
           {members
@@ -94,7 +94,7 @@ const ManageMembersModal = () => {
               return (
                 <div
                   key={member.member_id}
-                  className="w-full px-3 py-1 bg-slate-100 night:bg-slate-100  rounded-xl flex items-center justify-between"
+                  className="w-full px-3 py-1 bg-slate-100   rounded-xl flex items-center justify-between"
                 >
                   <div className="flex gap-4 items-center text-sm">
                     <Avatar>
@@ -121,7 +121,7 @@ const ManageMembersModal = () => {
                   </div>
                   {isLoadingId === member.member_id ? <Loader2Icon className="w-6 h-6 animate-spin text-black "/> : session.data?.user?.id !== member.profile.user_id && <DropdownMenu>
                     <DropdownMenuTrigger>
-                      <MoreVertical className="text-black night:text-black" />
+                      <MoreVertical className="text-black " />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                       <DropdownMenuLabel>Settings</DropdownMenuLabel>
@@ -156,7 +156,6 @@ const ManageMembersModal = () => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu> }
-                  
                 </div>
               );
             })}

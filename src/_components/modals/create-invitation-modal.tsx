@@ -33,21 +33,21 @@ const CreateInvitationModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className=" bg-slate-100 dark:bg-slate-200">
         <DialogHeader>
-          <DialogTitle>Invite friends</DialogTitle>
-          <div className="text-left">
+          <DialogTitle className="text-black">Invite friends</DialogTitle>
+          <div className="text-left text-black">
             <Label>Server Invite Url</Label>
-            <p className="text-sm text-muted-foreground mt-2 mb-2">
+            <p className="text-sm text-muted-foreground mt-2 mb-2 dark:text-black">
               This is the link you send to your friends
             </p>
             <div className="flex gap-4 items-center mb-4">
-              <Input readOnly value={inviteUrl} />
+              <Input readOnly value={inviteUrl} className="dark:text-black dark:bg-slate-100" />
               {saved ? (
                 <CopyCheck className="hover:cursor-pointer h-6 w-6 text-green-500" />
               ) : (
                 <Copy
-                  className="hover:cursor-pointer h-6 w-6 text-muted-foreground hover:text-primary"
+                  className="hover:cursor-pointer h-6 w-6 text-muted-foreground hover:text-primary dark:text-black"
                   onClick={() => {
                     setSaved(true);
                     navigator.clipboard.writeText(inviteUrl);

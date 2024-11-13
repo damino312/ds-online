@@ -57,7 +57,7 @@ const CreateServerModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className=" bg-slate-100 dark:bg-slate-200">
         <DialogHeader>
           <DialogTitle>Add Server</DialogTitle>
           <DialogDescription>

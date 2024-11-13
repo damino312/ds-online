@@ -73,7 +73,7 @@ const CreateChannelModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white night:bg-white">
+      <DialogContent className=" bg-slate-100 dark:bg-slate-200">
         <DialogHeader>
           <DialogTitle className="text-3xl text-black night:text-black ">
             Add Channel
