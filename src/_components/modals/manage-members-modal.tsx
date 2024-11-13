@@ -17,13 +17,13 @@ import {
   DropdownMenuSubTrigger,
 } from "../ui/dropdown-menu";
 import { useState } from "react";
-import { useRouter } from 'next/navigation';
 import { useAction } from '@/hooks/use-action';
 import { changeRole } from '@/actions/member/change-role';
 import { toast } from '../ui/use-toast';
+import { useSession } from "next-auth/react";
 
 const ManageMembersModal = () => {
-  const router = useRouter()
+  const session = useSession()
   const { isOpen, onClose, type, data, onOpen  } = useModal();
   const [isLoadingId, setIsLoadingId] = useState('')
 
@@ -73,8 +73,21 @@ const ManageMembersModal = () => {
         <DialogHeader>
           <DialogTitle className="mb-4 text-black">Manage members</DialogTitle>
           {members
-            ?.sort((a, b) =>
-              a.profile.user_name.localeCompare(b.profile.user_name)
+            ?.sort((a, b) => {
+              if (a.member_role === MemberRole.ADMIN && b.member_role !== MemberRole.ADMIN) {
+                return -1;
+              }
+              if (a.member_role !== MemberRole.ADMIN && b.member_role === MemberRole.ADMIN) {
+                return 1;
+              }
+              if (a.member_role === MemberRole.MODERATOR && b.member_role !== MemberRole.MODERATOR) {
+                return -1;
+              }
+              if (a.member_role !== MemberRole.MODERATOR && b.member_role === MemberRole.MODERATOR) {
+                return 1;
+              }
+              return a.profile.user_name.localeCompare(b.profile.user_name);
+            }
             )
             .map((member) => {
               const profile = member.profile;
@@ -106,7 +119,7 @@ const ManageMembersModal = () => {
                       </span>
                     </div>
                   </div>
-                  {isLoadingId === member.member_id ? <Loader2Icon className="w-6 h-6 animate-spin text-black "/> : <DropdownMenu>
+                  {isLoadingId === member.member_id ? <Loader2Icon className="w-6 h-6 animate-spin text-black "/> : session.data?.user?.id !== member.profile.user_id && <DropdownMenu>
                     <DropdownMenuTrigger>
                       <MoreVertical className="text-black night:text-black" />
                     </DropdownMenuTrigger>

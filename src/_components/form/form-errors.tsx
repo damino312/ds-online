@@ -7,7 +7,6 @@ interface FormErrorsProps {
 
 export const FormErrors = ({ id, errors }: FormErrorsProps) => {
   if (!errors) return null;
-  console.log(errors, id);
   return (
     <div
       id={`${id}-error`}
@@ -17,7 +16,7 @@ export const FormErrors = ({ id, errors }: FormErrorsProps) => {
       {errors?.[id]?.map((error: string) => (
         <div
           key={error}
-          className="flex items-center font-medium p-2 border border-rose-500 bg-rose-500/10 rounded-sm"
+          className="flex items-center font-medium p-2 border border-rose-500 bg-rose-500/10 rounded-sm my-2"
         >
           <XCircle className="h-4 w-4 mr-2" />
           {error}

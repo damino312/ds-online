@@ -35,7 +35,6 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       className,
       defaultValue = "",
       onBlur,
-      name,
       labelClassName,
     },
     ref
@@ -43,11 +42,11 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
     const { pending } = useFormStatus();
     return (
       <div className="space-y-2">
-        <div className="space-y-1">
+        <div>
           {label ? (
             <Label
               htmlFor={id}
-              className={cn("text-sx font-semibold ", labelClassName)}
+              className={cn("text-sx font-semibold mb-1", labelClassName)}
             >
               {label}
             </Label>
