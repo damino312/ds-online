@@ -82,7 +82,7 @@ const ServerSidebarHeader = ({
           </DropdownMenuItem>
         )}
         {!isAdmin && (
-          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer text-red-600">
+          <DropdownMenuItem className="px-3 py-2 text-sm cursor-pointer text-red-600" onClick={() => onOpen('leaveServer', {server: server})}>
             Leave Server
             <LogOut className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>

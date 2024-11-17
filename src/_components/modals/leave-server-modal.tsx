@@ -1,6 +1,5 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,17 +12,18 @@ import { useAction } from "@/hooks/use-action";
 import { useToast } from "@/_components/ui/use-toast";
 import { FormSubmit } from "@/_components/form/form-submit";
 import { Button } from '@/_components/ui/button';
-import { deleteServer } from "@/actions/server/delete-server";
+import { leaveServer } from "@/actions/member/leave-server";
 
-const DeleteServerModal = () => {
+const LeaveServerModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const { toast } = useToast();
-
-  const { execute } = useAction(deleteServer, {
+  
+  const {server} = data
+  const { execute } = useAction(leaveServer, {
     onSuccess: (data) => {
       toast({
-        title: "Server Deleted",
-        description: 'Server "' + data.server_name + '" deleted successfully',
+        title: "Info",
+        description: 'You left server "' + server?.server_name + '"',
       });
       onClose();
     },
@@ -37,10 +37,9 @@ const DeleteServerModal = () => {
     },
   });
 
-  const isModalOpen = isOpen && type === "deleteServer";
+  const isModalOpen = isOpen && type === "leaveServer";
 
   if (!isModalOpen) return null;
-  const {server} = data
 
   function onSubmit() {
     if (!server) {
@@ -60,15 +59,14 @@ const DeleteServerModal = () => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className=" bg-slate-100 dark:bg-slate-200">
         <DialogHeader>
-          <DialogTitle className="text-4xl dark:text-black">Delete &quot;{server?.server_name}&quot; server</DialogTitle>
+          <DialogTitle className="text-4xl dark:text-black">Leave &quot;{server?.server_name}&quot; server</DialogTitle>
           <DialogDescription className="text-left text-black font-bold">
-            Are you sure you want to delete this server? This action cannot be
-            undone!
+            Do you really want to leave the server?
           </DialogDescription>
           <form className=" flex justify-end gap-4 pt-6" action={onSubmit}>
             <Button variant='secondary' className="bg-gray-400 px-8 text-white" onClick={onClose}>Cancel</Button>
             <FormSubmit variant="destructive" className="px-8 bg-red-700" >
-              Delete
+              Leave
             </FormSubmit>
           </form>
         </DialogHeader>
@@ -77,4 +75,4 @@ const DeleteServerModal = () => {
   );
 };
 
-export default DeleteServerModal;
+export default LeaveServerModal;
