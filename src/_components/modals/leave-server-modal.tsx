@@ -57,14 +57,14 @@ const LeaveServerModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className=" bg-slate-100 dark:bg-slate-200">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-4xl dark:text-black">Leave &quot;{server?.server_name}&quot; server</DialogTitle>
-          <DialogDescription className="text-left text-black font-bold">
+          <DialogTitle className="text-4xl">Leave &quot;{server?.server_name}&quot; server</DialogTitle>
+          <DialogDescription className="text-left font-bold">
             Do you really want to leave the server?
           </DialogDescription>
           <form className=" flex justify-end gap-4 pt-6" action={onSubmit}>
-            <Button variant='secondary' className="bg-gray-400 px-8 text-white" onClick={onClose}>Cancel</Button>
+            <Button className="bg-gray-400 px-8" onClick={onClose}>Cancel</Button>
             <FormSubmit variant="destructive" className="px-8 bg-red-700" >
               Leave
             </FormSubmit>

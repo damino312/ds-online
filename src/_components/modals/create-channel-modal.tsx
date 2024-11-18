@@ -73,26 +73,26 @@ const CreateChannelModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className=" bg-slate-100 dark:bg-slate-200">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-3xl text-black night:text-black ">
+          <DialogTitle className="text-3xl">
             Add Channel
           </DialogTitle>
           <form className="pt-2" action={onSubmit}>
             <FormInput
               label="Channel Name"
-              labelClassName="block text-left text-black night:text-black"
+              labelClassName="block text-left "
               errors={fieldErrors}
               required
               placeholder="Name here"
-              className="h-10 text-black night:text-black bg-white night:bg-white mb-3"
+              className="h-10 mb-3"
               id="channel_name"
             />
             <Select name="channel_type" required>
-              <SelectTrigger className="w-1/2 bg-white night:bg-white text-black night:text-black">
+              <SelectTrigger className="w-1/2">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
-              <SelectContent className="bg-white night:bg-white text-black night:text-black">
+              <SelectContent>
                 <SelectItem value="TEXT">TEXT</SelectItem>
                 <SelectItem value="AUDIO">AUDIO</SelectItem>
                 <SelectItem value="VIDEO">VIDEO</SelectItem>
