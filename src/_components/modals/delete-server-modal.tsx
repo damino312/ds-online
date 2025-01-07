@@ -60,8 +60,8 @@ const DeleteServerModal = () => {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-4xl mb-2">Delete &quot;{server?.server_name}&quot; server</DialogTitle>
-          <DialogDescription className="font-bold text-left mb-6">
+          <DialogTitle className="text-4xl text-left">Delete &quot;{server?.server_name}&quot; server</DialogTitle>
+          <DialogDescription className="font-bold text-left pt-2">
             Are you sure you want to delete this server? This action cannot be
             undone!
           </DialogDescription>

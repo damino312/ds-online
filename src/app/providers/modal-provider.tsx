@@ -3,6 +3,7 @@ import CreateChannelModal from "@/_components/modals/create-channel-modal";
 import CreateInvitationModal from "@/_components/modals/create-invitation-modal";
 import CreateServerModal from "@/_components/modals/create-server-modal";
 import DeleteServerModal from "@/_components/modals/delete-server-modal";
+import EditServerModal from "@/_components/modals/edit-server-modal";
 import LeaveServerModal from "@/_components/modals/leave-server-modal";
 import ManageMembersModal from "@/_components/modals/manage-members-modal";
 import { useEffect, useState } from "react";
@@ -26,6 +27,7 @@ const ModalProvider = () => {
       <CreateChannelModal />
       <DeleteServerModal/>
       <LeaveServerModal/>
+      <EditServerModal/>
     </>
   );
 };
