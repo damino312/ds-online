@@ -12,7 +12,7 @@ import {
   CommandSeparator,
 } from "../ui/command";
 import { ChannelType } from "@prisma/client";
-import { Camera, Frame, Mic } from "lucide-react";
+import { Frame, Mic, Video } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -86,7 +86,7 @@ const ServerSearchModal = () => {
               <CommandGroup heading="Video Channels">
                 {videoChannels.map((channel) => (
                   <CommandItem key={channel.channel_id} className="cursor-pointer" onSelect={() => handleClick({id: channel.channel_id, type: 'channel'})}>
-                    <Camera />
+                    <Video />
                     <span>{channel.channel_name}</span>
                   </CommandItem>
                 ))}

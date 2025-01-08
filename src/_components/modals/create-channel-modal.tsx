@@ -21,10 +21,13 @@ import {
 } from "../ui/select";
 import { createChannel } from "@/actions/channel/create-channel";
 import { ChannelType } from "@prisma/client";
+import { useParams } from "next/navigation";
 
 const CreateChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
-  const { server } = data;
+  const params = useParams();
+  const serverId = params.serverId;
+  const { channelType } = data;
   const { toast } = useToast();
 
   const { execute, isLoading, fieldErrors } = useAction(createChannel, {
@@ -55,7 +58,7 @@ const CreateChannelModal = () => {
       | ChannelType
       | undefined;
 
-    if (!channelName || !channelType || !server) {
+    if (!channelName || !channelType || !serverId) {
       toast({
         title: "Error",
         description: "Incomplete data",
@@ -67,7 +70,7 @@ const CreateChannelModal = () => {
     execute({
       channel_name: channelName,
       channel_type: channelType,
-      server_id: server?.server_id,
+      server_id: serverId as string,
     });
   }
 
@@ -88,14 +91,14 @@ const CreateChannelModal = () => {
               className="h-10 mb-3"
               id="channel_name"
             />
-            <Select name="channel_type" required>
+            <Select name="channel_type" required defaultValue={channelType}>
               <SelectTrigger className="w-1/2">
                 <SelectValue placeholder="Type" />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="TEXT">TEXT</SelectItem>
-                <SelectItem value="AUDIO">AUDIO</SelectItem>
-                <SelectItem value="VIDEO">VIDEO</SelectItem>
+              <SelectContent >
+                <SelectItem value={ChannelType.TEXT}>{ChannelType.TEXT}</SelectItem>
+                <SelectItem value={ChannelType.AUDIO}>{ChannelType.AUDIO}</SelectItem>
+                <SelectItem value={ChannelType.VIDEO}>{ChannelType.VIDEO}</SelectItem>
               </SelectContent>
             </Select>
             <FormSubmit

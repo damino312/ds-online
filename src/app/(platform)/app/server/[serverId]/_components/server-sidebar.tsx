@@ -4,6 +4,8 @@ import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 import ServerSidebarHeader from "./server-sidebar-header";
 import ServerSearch from "./server-search";
+import { Separator } from "@/_components/ui/separator";
+import ServerSidebarChannelSection from "./server-sidebar-channel-section";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -33,8 +35,8 @@ const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
               user_login: true,
               user_name: true,
               user_picture: true,
-            }
-          }
+            },
+          },
         },
       },
     },
@@ -63,6 +65,14 @@ const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
     <div className="w-full h-full dark:bg-[#292b2e] bg-[#eaeeef]">
       <ServerSidebarHeader server={server} role={usersRole} />
       <ServerSearch server={server} />
+      <div className="mx-3 mt-2">
+        <Separator className=" bg-zinc-400 dark:bg-zinc-500  " />
+      </div>
+      <ServerSidebarChannelSection
+        textChannels={textChannels}
+        audioChannels={audioChannels}
+        videoChannels={videoChannels}
+      />
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
 } from "@/_components/ui/dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
 import { ServerWithMembersWithUsers } from "@/types/types";
-import { Member, MemberRole } from "@prisma/client";
+import { MemberRole } from "@prisma/client";
 import {
   ChevronDown,
   LogOut,
