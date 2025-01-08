@@ -6,6 +6,7 @@ import DeleteServerModal from "@/_components/modals/delete-server-modal";
 import EditServerModal from "@/_components/modals/edit-server-modal";
 import LeaveServerModal from "@/_components/modals/leave-server-modal";
 import ManageMembersModal from "@/_components/modals/manage-members-modal";
+import ServerSearchModal from "@/_components/modals/server-search-modal";
 import { useEffect, useState } from "react";
 
 const ModalProvider = () => {
@@ -28,6 +29,7 @@ const ModalProvider = () => {
       <DeleteServerModal/>
       <LeaveServerModal/>
       <EditServerModal/>
+      <ServerSearchModal/>
     </>
   );
 };

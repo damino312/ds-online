@@ -23,13 +23,11 @@ import {
 interface ServerSidebarHeaderProps {
   server: ServerWithMembersWithUsers;
   role?: MemberRole;
-  members?: Member[];
 }
 
 const ServerSidebarHeader = ({
   server,
   role,
-  members,
 }: ServerSidebarHeaderProps) => {
   const { onOpen } = useModal();
 
@@ -38,7 +36,7 @@ const ServerSidebarHeader = ({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="focus:outline-none">
-        <button className="w-full h-12 text-md font-semibold flex items-center justify-between px-3 border-neutral-200 dark:border-neutral-800 hover:bg-zinc-700\10 dark:hover:bg-zinc-700/50 transition">
+        <button className="w-full h-12 text-md font-semibold flex items-center justify-between px-3 border-neutral-200 dark:border-neutral-800  dark:hover:bg-zinc-700/50 hover:bg-zinc-700/10 transition duration-300">
           {server.server_name}
           <ChevronDown className="h-5 w-5" />
         </button>

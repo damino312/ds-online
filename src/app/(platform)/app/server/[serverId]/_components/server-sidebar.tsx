@@ -3,6 +3,7 @@ import { AuthUser } from "@/types/next-auth";
 import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 import ServerSidebarHeader from "./server-sidebar-header";
+import ServerSearch from "./server-search";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -25,7 +26,15 @@ const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
           created_at: "desc",
         },
         include: {
-          profile: true,
+          profile: {
+            select: {
+              user_id: true,
+              user_email: true,
+              user_login: true,
+              user_name: true,
+              user_picture: true,
+            }
+          }
         },
       },
     },
@@ -53,6 +62,7 @@ const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
   return (
     <div className="w-full h-full dark:bg-[#292b2e] bg-[#eaeeef]">
       <ServerSidebarHeader server={server} role={usersRole} />
+      <ServerSearch server={server} />
     </div>
   );
 };
