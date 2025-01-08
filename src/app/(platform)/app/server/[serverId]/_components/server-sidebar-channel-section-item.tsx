@@ -1,21 +1,28 @@
 "use client";
 
 import { useModal } from "@/hooks/use-modal-store";
-import { Channel, ChannelType } from "@prisma/client";
+import { Channel, ChannelType, MemberRole } from "@prisma/client";
 import { Edit, Frame, Mic, Plus, Trash, Video } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 
 const ServerSidebarChannelSectionItem = ({
   type,
   channels,
+  role
 }: {
   type: ChannelType;
   channels: Channel[];
+  role?: MemberRole;
 }) => {
   const router = useRouter();
   const params = useParams();
+  const session = useSession()
   const { onOpen } = useModal();
+
   const serverId = params.serverId;
+  const isAdmin = role === MemberRole.ADMIN;
+  const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
   const handleClick = (id: string) => {
     router.push(`/servers/${serverId}/channels/${id}`);
@@ -33,6 +40,7 @@ const ServerSidebarChannelSectionItem = ({
 
   const handleClickEdit = (e: React.MouseEvent, channel: Channel) => {
     e.stopPropagation();
+    onOpen("editChannel", { channel });
   };
 
   const handleClickDelete = (e: React.MouseEvent, channel: Channel) => {
@@ -69,7 +77,7 @@ const ServerSidebarChannelSectionItem = ({
               {type === ChannelType.VIDEO && <Video size={18} />}
               <span>{channel.channel_name}</span>
             </div>
-            {channel.channel_name !== "general" && (
+            {(channel.channel_name !== "general" && isModerator) && (
               <div className="flex items-center gap-2">
                 <button
                   className="p-1 opacity-0 group-hover:opacity-100 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm"

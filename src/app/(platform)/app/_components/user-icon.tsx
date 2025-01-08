@@ -1,12 +1,17 @@
-import { AuthUser } from "@/types/next-auth";
+import { cn } from "@/lib/utils";
 
-const UserIcon = ({ user }: { user: AuthUser }) => {
+interface UserIconProps {
+  userName: string | null,
+  className?: string
+}
+
+const UserIcon = ({className = '', userName }: UserIconProps ) => {
   return (
-    <button className="w-12 h-12 flex justify-center items-center rounded-full dark:bg-white bg-black ">
+    <div className={cn("w-12 h-12 flex justify-center items-center rounded-full dark:bg-white bg-black", className )}>
       <span className="dark:text-black text-white font-semibold">
-        {user?.name?.toUpperCase()[0] || "U"}
+        {userName?.[0].toUpperCase() || "U"}
       </span>
-    </button>
+    </div>
   );
 };
 export default UserIcon;

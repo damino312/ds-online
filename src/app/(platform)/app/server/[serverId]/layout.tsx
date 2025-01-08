@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import ServerSidebar from "./_components/server-sidebar";
+import ServerSidebarMembers from "./_components/server-sidebar-members";
 
 const ServerIdLayout = async ({
   children,
@@ -24,17 +25,44 @@ const ServerIdLayout = async ({
         },
       },
     },
+    include: {
+      channels: {
+        orderBy: {
+          created_at: "desc",
+        },
+      },
+      members: {
+        orderBy: {
+          created_at: "desc",
+        },
+        include: {
+          profile: {
+            select: {
+              user_id: true,
+              user_email: true,
+              user_login: true,
+              user_name: true,
+              user_picture: true,
+            },
+          },
+        },
+      },
+    },
   });
   if (!server || !user) {
     redirect("/app");
   }
+
   return (
-    <>
+    <div className="flex w-full">
       <div className="w-56">
-        <ServerSidebar serverId={serverId} user={user} />
+        <ServerSidebar server={server} user={user} />
       </div>
-      {children}
-    </>
+      <div className="flex-1">{children}</div>
+      <div className="w-56">
+        <ServerSidebarMembers members={server.members} />
+      </div>
+    </div>
   );
 };
 

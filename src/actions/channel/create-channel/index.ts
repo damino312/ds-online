@@ -20,6 +20,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       error: "Incomplete data",
     };
   }
+
+  if (channel_name === 'general') {
+    return {
+      error: "Channel name can't be 'general'",
+    };
+  }
+
   try {
     const server = await db.server.findFirst({
       where: {

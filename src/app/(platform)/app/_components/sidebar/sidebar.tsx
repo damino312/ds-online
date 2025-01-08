@@ -64,7 +64,7 @@ const Sidebar = ({ servers }: SidebarProps) => {
       </div>
       <ModeToggle />
       <div className="mt-4">
-        <UserIcon user={user} />
+        <UserIcon userName={user?.name} />
       </div>
     </div>
   );

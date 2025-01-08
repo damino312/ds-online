@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { DeleteChannel } from "./schema";
-import { Channel } from "@prisma/client";
+import { Channel, MemberRole } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await getServerSession(authOptions);
@@ -33,12 +33,6 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       };
     }
 
-    if (server.server_owner !== user.id) {
-      return {
-        error: "Unauthorized",
-      };
-    }
-
     const channel = await db.channel.findFirst({
       where: {
         channel_id,
@@ -48,6 +42,19 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     if (channel.channel_name === 'general') {
       return {
         error: "Cannot delete general channel",
+      };
+    }
+
+    const member = await db.member.findFirst({
+      where: {
+        server_id: server.server_id,
+        user_id: user.id,
+      },
+    });
+
+    if (member?.member_role !== MemberRole.ADMIN && member?.member_role !== MemberRole.MODERATOR) {
+      return {
+        error: "Unauthorized",
       };
     }
 

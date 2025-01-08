@@ -3,7 +3,7 @@ import { Channel } from "@prisma/client";
 
 import { ActionState } from "@/lib/create-safe-action";
 
-import { CreateChannel } from "./schema";
+import { EditChannel } from "./schema";
 
-export type InputType = z.infer<typeof CreateChannel>;
+export type InputType = z.infer<typeof EditChannel>;
 export type ReturnType = ActionState<InputType, Channel>;

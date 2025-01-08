@@ -1,51 +1,18 @@
-import { db } from "@/lib/db";
 import { AuthUser } from "@/types/next-auth";
 import { ChannelType } from "@prisma/client";
-import { redirect } from "next/navigation";
 import ServerSidebarHeader from "./server-sidebar-header";
 import ServerSearch from "./server-search";
 import { Separator } from "@/_components/ui/separator";
 import ServerSidebarChannelSection from "./server-sidebar-channel-section";
+import { ServerWithMembersWithUsers } from "@/types/types";
 
 interface ServerSidebarProps {
-  serverId: string;
+  server: ServerWithMembersWithUsers;
   user: AuthUser;
 }
 
-const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
-  const server = await db.server.findUnique({
-    where: {
-      server_id: serverId,
-    },
-    include: {
-      channels: {
-        orderBy: {
-          created_at: "desc",
-        },
-      },
-      members: {
-        orderBy: {
-          created_at: "desc",
-        },
-        include: {
-          profile: {
-            select: {
-              user_id: true,
-              user_email: true,
-              user_login: true,
-              user_name: true,
-              user_picture: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!server) {
-    return redirect("/app");
-  }
-
+const ServerSidebar = async ({ server, user }: ServerSidebarProps) => {
+  
   const textChannels = server.channels.filter(
     (channel) => channel.channel_type === ChannelType.TEXT
   );
@@ -55,8 +22,6 @@ const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
   const videoChannels = server.channels.filter(
     (channel) => channel.channel_type === ChannelType.VIDEO
   );
-  const members = server.members.filter((member) => member.user_id !== user.id);
-
   const usersRole = server.members.find(
     (member) => member.user_id === user.id
   )?.member_role;
@@ -72,6 +37,7 @@ const ServerSidebar = async ({ serverId, user }: ServerSidebarProps) => {
         textChannels={textChannels}
         audioChannels={audioChannels}
         videoChannels={videoChannels}
+        role={usersRole}
       />
     </div>
   );

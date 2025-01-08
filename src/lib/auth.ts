@@ -60,13 +60,12 @@ export const authOptions: NextAuthOptions = {
         },
         select: {
           user_login: true,
+          user_name: true,
         },
       });
 
       if (!user) {
         session.user = null;
-        console.log(session);
-
         return session;
       }
 
@@ -74,6 +73,7 @@ export const authOptions: NextAuthOptions = {
         ...session.user,
         id: token.id,
         login: token.login,
+        name: user.user_name,
       };
       return session;
     },

@@ -3,10 +3,11 @@
 import { InputType, ReturnType } from "./types";
 import { db } from "@/lib/db";
 import { createSafeAction } from "@/lib/create-safe-action";
-import { CreateChannel } from "./schema";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { EditChannel } from "./schema";
+import { Channel, MemberRole } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const session = await getServerSession(authOptions);
@@ -14,52 +15,64 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   if (!session?.user?.id) return { error: "Unauthorized" };
   const user = session.user;
 
-  const { channel_name, channel_type,server_id} = data;
-  if (!server_id || !channel_name || !channel_type) {
+  const { channel_id, channel_name} = data;
+
+  if (channel_name === 'general') {
     return {
-      error: "Incomplete data",
+      error: "Channel name can't be 'general'",
     };
   }
+
   try {
     const server = await db.server.findFirst({
       where: {
-        server_id: server_id,
-      },
-      include: {
-        channels: true,
+        channels: {
+          some: {
+            channel_id,
+          },
+        },
       },
     });
-
     if (!server) {
       return {
         error: "Server not found",
       };
     }
 
-    if (server.server_owner !== user.id) {
+    const channel = await db.channel.findFirst({
+      where: {
+        channel_id,
+      },
+    }) as Channel;
+
+    if (channel.channel_name === 'general') {
+      return {
+        error: "Cannot delete general channel",
+      };
+    }
+
+    const member = await db.member.findFirst({
+      where: {
+        server_id: server.server_id,
+        user_id: user.id,
+      },
+    });
+
+    if (member?.member_role !== MemberRole.ADMIN && member?.member_role !== MemberRole.MODERATOR) {
       return {
         error: "Unauthorized",
       };
     }
 
-    if (server.channels.some((channel) => channel.channel_name === channel_name)) {
-      return {
-        error: "Channel name already exists",
-      };
-    }
-
-    const channel = await db.channel.create({
+    const updatedChannel = await db.channel.update({
+      where: channel,
       data: {
         channel_name,
-        channel_type,
-        user_id: user.id,
-        server_id: server_id,
       },
-    });
+    })
 
-   
-    revalidatePath("/app/server" + server_id);
-    return { data: channel };
+    revalidatePath("/app/server" + server.server_id);
+    return { data: updatedChannel };
   } catch (error) {
     console.error(error);
     return {
@@ -68,4 +81,4 @@ const handler = async (data: InputType): Promise<ReturnType> => {
   }
 };
 
-export const createChannel = createSafeAction(CreateChannel, handler);
+export const editChannel = createSafeAction(EditChannel, handler);
