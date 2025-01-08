@@ -2,6 +2,7 @@
 import CreateChannelModal from "@/_components/modals/create-channel-modal";
 import CreateInvitationModal from "@/_components/modals/create-invitation-modal";
 import CreateServerModal from "@/_components/modals/create-server-modal";
+import DeleteChannelModal from "@/_components/modals/delete-channel-modal";
 import DeleteServerModal from "@/_components/modals/delete-server-modal";
 import EditServerModal from "@/_components/modals/edit-server-modal";
 import LeaveServerModal from "@/_components/modals/leave-server-modal";
@@ -30,6 +31,7 @@ const ModalProvider = () => {
       <LeaveServerModal/>
       <EditServerModal/>
       <ServerSearchModal/>
+      <DeleteChannelModal/>
     </>
   );
 };

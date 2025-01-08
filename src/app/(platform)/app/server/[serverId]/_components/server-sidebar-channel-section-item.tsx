@@ -15,7 +15,7 @@ const ServerSidebarChannelSectionItem = ({
   const router = useRouter();
   const params = useParams();
   const { onOpen } = useModal();
-  const serverId = params.serverId
+  const serverId = params.serverId;
 
   const handleClick = (id: string) => {
     router.push(`/servers/${serverId}/channels/${id}`);
@@ -31,13 +31,25 @@ const ServerSidebarChannelSectionItem = ({
     }
   };
 
+  const handleClickEdit = (e: React.MouseEvent, channel: Channel) => {
+    e.stopPropagation();
+  };
+
+  const handleClickDelete = (e: React.MouseEvent, channel: Channel) => {
+    e.stopPropagation();
+    onOpen("deleteChannel", { channel });
+  };
+
   return (
     <>
       <div className="flex justify-between items-center text-sm font-bold dark:text-gray-400">
         {type === ChannelType.TEXT && <span>TEXT CHANNELS</span>}
         {type === ChannelType.AUDIO && <span>AUDIO CHANNELS</span>}
         {type === ChannelType.VIDEO && <span>VIDEO CHANNELS</span>}
-        <button className="p-1 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm" onClick={() => onOpen('createChannel', { channelType: type})}>
+        <button
+          className="p-1 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm"
+          onClick={() => onOpen("createChannel", { channelType: type })}
+        >
           <Plus size={16} />
         </button>
       </div>
@@ -57,14 +69,22 @@ const ServerSidebarChannelSectionItem = ({
               {type === ChannelType.VIDEO && <Video size={18} />}
               <span>{channel.channel_name}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <button className="p-1 opacity-0 group-hover:opacity-100 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm">
-                <Edit size={18} />
-              </button>
-              <button className="p-1 opacity-0 group-hover:opacity-100 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm">
-                <Trash size={18} />
-              </button>
-            </div>
+            {channel.channel_name !== "general" && (
+              <div className="flex items-center gap-2">
+                <button
+                  className="p-1 opacity-0 group-hover:opacity-100 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm"
+                  onClick={(e) => handleClickEdit(e, channel)}
+                >
+                  <Edit size={18} />
+                </button>
+                <button
+                  className="p-1 opacity-0 group-hover:opacity-100 transition duration-200 dark:hover:bg-zinc-700 hover:bg-zinc-400 rounded-sm"
+                  onClick={(e) => handleClickDelete(e, channel)}
+                >
+                  <Trash size={18} />
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
