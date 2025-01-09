@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemberSidebar } from "@/hooks/use-member-sidebar";
-import { User } from "lucide-react";
+import { Frame, Mic, User, Video } from "lucide-react";
 import ServerMenuBtn from "./server-menu-btn";
 import { ServerWithMembersWithUsers } from "@/types/types";
 import { AuthUser } from "@/types/next-auth";
-import { Server } from "@prisma/client";
-
+import { ChannelType, Server } from "@prisma/client";
+import { useParams } from "next/navigation";
 
 interface ServerMenuBtnProps {
   server: ServerWithMembersWithUsers;
@@ -16,12 +16,25 @@ interface ServerMenuBtnProps {
 
 const ServerHeader = ({ server, user, servers }: ServerMenuBtnProps) => {
   const { onToggle } = useMemberSidebar();
+  const { channelId } = useParams();
+
+  const channel = server.channels.find(
+    (channel) => channel.channel_id === channelId
+  );
 
   return (
     <div className="h-12 bg-white dark:bg-[#313338] z-20 border-b-[1px]">
       <div className="flex items-center h-full px-4">
-        <div className="lg:!hidden flex items-center justify-center">
-          <ServerMenuBtn server={server} user={user} servers={servers} />
+        <div className="flex items-center justify-center gap-2">
+          <div className="lg:!hidden flex items-center justify-center">
+            <ServerMenuBtn server={server} user={user} servers={servers} />
+          </div>
+          <div className="flex items-center gap-2">
+            {channel?.channel_type === ChannelType.TEXT && <Frame size={18} />}
+            {channel?.channel_type === ChannelType.AUDIO && <Mic size={18} />}
+            {channel?.channel_type === ChannelType.VIDEO && <Video size={18} />}
+            <span>{channel?.channel_name}</span>
+          </div>
         </div>
         <div className="flex items-center ml-auto">
           <button onClick={onToggle}>
