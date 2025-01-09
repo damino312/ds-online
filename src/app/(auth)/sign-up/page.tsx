@@ -17,7 +17,7 @@ const RegistrationPage = () => {
       toast({
         description: "You have successfully signed up!",
       });
-      router.push("/");
+      router.push("/sign-in");
     },
     onError: (error) => {
       console.log(error);
