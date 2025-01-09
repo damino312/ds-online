@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import ServerSidebar from "./_components/server-sidebar";
 import ServerSidebarMembers from "./_components/server-sidebar-members";
+import ServerHeader from "./_components/server-header";
 
 const ServerIdLayout = async ({
   children,
@@ -49,18 +50,33 @@ const ServerIdLayout = async ({
       },
     },
   });
-  if (!server || !user) {
+
+  const servers = await db.server.findMany({
+    where: {
+      members: {
+        some: {
+          user_id: user?.id,
+        },
+      },
+    }
+  });
+
+
+  if (!server || !user || servers.length === 0) {
     redirect("/app");
   }
 
   return (
-    <div className="flex w-full">
-      <div className="w-56">
+    <div className=" w-full h-full flex">
+      <div className="h-full hidden lg:block">
         <ServerSidebar server={server} user={user} />
       </div>
-      <div className="flex-1">{children}</div>
-      <div className="w-56">
-        <ServerSidebarMembers members={server.members} />
+      <div className="flex flex-col w-full ">
+        <ServerHeader server={server} user={user} servers={servers} />
+        <div className="flex h-full">
+          <div className="w-full">{children}</div>
+          <ServerSidebarMembers members={server.members} />
+        </div>
       </div>
     </div>
   );

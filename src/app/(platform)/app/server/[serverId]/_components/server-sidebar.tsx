@@ -11,7 +11,7 @@ interface ServerSidebarProps {
   user: AuthUser;
 }
 
-const ServerSidebar = async ({ server, user }: ServerSidebarProps) => {
+const ServerSidebar = ({ server, user }: ServerSidebarProps) => {
   
   const textChannels = server.channels.filter(
     (channel) => channel.channel_type === ChannelType.TEXT
@@ -27,7 +27,7 @@ const ServerSidebar = async ({ server, user }: ServerSidebarProps) => {
   )?.member_role;
 
   return (
-    <div className="w-full h-full dark:bg-[#292b2e] bg-[#eaeeef]">
+    <div className="w-56 h-full dark:bg-[#292b2e] bg-[#eaeeef]">
       <ServerSidebarHeader server={server} role={usersRole} />
       <ServerSearch server={server} />
       <div className="mx-3 mt-2">

@@ -6,12 +6,12 @@ import { useSession } from "next-auth/react";
 import { AuthUser } from "@/types/next-auth";
 import SidebarItem from "./sidebar-item";
 import { ModeToggle } from "@/_components/mode-toggle";
-import { Member, Server } from "@prisma/client";
+import { Server } from "@prisma/client";
 import { useModal } from "@/hooks/use-modal-store";
 import AddServerBtn from "./add-server-btn";
 
 interface SidebarProps {
-  servers: (Server & { members: Member[] })[];
+  servers: Server[];
 }
 
 const Sidebar = ({ servers }: SidebarProps) => {

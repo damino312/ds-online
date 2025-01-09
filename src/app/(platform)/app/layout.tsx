@@ -20,13 +20,12 @@ const AppLayout = async ({ children }: { children: React.ReactNode }) => {
         },
       },
     },
-    include: {
-      members: true,
-    },
   });
   return (
-    <div className="flex">
-      <Sidebar servers={servers} />
+    <div className="flex min-h-svh w-full">
+      <div className="h-full hidden lg:block">
+        <Sidebar servers={servers} />
+      </div>
       {children}
     </div>
   );

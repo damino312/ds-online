@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "../_components/ui/toaster";
 import ModalProvider from "./providers/modal-provider";
 import { ThemeProvider } from "./providers/theme-provider";
+import { SidebarProvider } from "@/_components/ui/sidebar";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,9 +16,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
       disableTransitionOnChange
     >
       <SessionProvider refetchInterval={5 * 60}>
-        <Toaster />
-        <ModalProvider />
-        {children}
+        <SidebarProvider>
+          <Toaster />
+          <ModalProvider />
+          {children}
+        </SidebarProvider>
       </SessionProvider>
     </ThemeProvider>
   );

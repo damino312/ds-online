@@ -18,7 +18,6 @@ const ServerSidebarChannelSectionItem = ({
 }) => {
   const router = useRouter();
   const params = useParams();
-  const session = useSession()
   const { onOpen } = useModal();
 
   const {serverId, channelId} = params;
