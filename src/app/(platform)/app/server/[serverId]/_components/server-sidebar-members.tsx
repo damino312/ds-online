@@ -17,7 +17,7 @@ const ServerSidebarMembers = ({ members }: ServerSidebarMembersProps) => {
   const params = useParams();
 
   const handleUserClick = ({ id }: { id: string }) => {
-    router.push(`/servers/${params.serverId}/conversations/${id}`);
+    router.push(`/app/server/${params.serverId}/conversation/${id}`);
   };
 
   return (

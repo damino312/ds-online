@@ -43,10 +43,10 @@ const ServerSearchModal = () => {
   const handleClick = ({id, type}: {id: string, type: 'channel' | 'member'}) => {
     onClose();
     if (type === 'channel') {
-      router.push(`/servers/${server.server_id}/channels/${id}`)
+      router.push(`/app/server/${server.server_id}/channel/${id}`)
     }
     if (type === 'member') {
-      router.push(`/servers/${server.server_id}/conversations/${id}`)
+      router.push(`/app/server/${server.server_id}/conversation/${id}`)
     }
   }
 

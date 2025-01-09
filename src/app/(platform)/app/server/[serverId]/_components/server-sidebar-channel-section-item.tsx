@@ -1,6 +1,7 @@
 "use client";
 
 import { useModal } from "@/hooks/use-modal-store";
+import { cn } from "@/lib/utils";
 import { Channel, ChannelType, MemberRole } from "@prisma/client";
 import { Edit, Frame, Mic, Plus, Trash, Video } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -20,12 +21,12 @@ const ServerSidebarChannelSectionItem = ({
   const session = useSession()
   const { onOpen } = useModal();
 
-  const serverId = params.serverId;
+  const {serverId, channelId} = params;
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
   const handleClick = (id: string) => {
-    router.push(`/servers/${serverId}/channels/${id}`);
+    router.push(`/app/server/${serverId}/channel/${id}`);
   };
 
   const handleKeyDown = (
@@ -69,7 +70,7 @@ const ServerSidebarChannelSectionItem = ({
             key={channel.channel_id}
             onClick={() => handleClick(channel.channel_id)}
             onKeyDown={(e) => handleKeyDown(e, channel.channel_id)}
-            className="flex justify-between items-center text-sm dark:text-gray-400 px-2 dark:hover:bg-zinc-700/50 hover:bg-zinc-700/10  transition duration-300 rounded-sm py-2 cursor-pointer group"
+            className={cn("flex justify-between items-center text-sm dark:text-gray-400 px-2 dark:hover:bg-zinc-700/50 hover:bg-zinc-700/10  transition duration-300 rounded-sm py-2 cursor-pointer group", channel.channel_id === channelId && "bg-zinc-700/20 dark:bg-zinc-700")}
           >
             <div className="flex gap-2 items-center">
               {type === ChannelType.TEXT && <Frame size={18} />}
