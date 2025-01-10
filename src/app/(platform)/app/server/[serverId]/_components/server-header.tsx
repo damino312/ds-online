@@ -8,6 +8,7 @@ import { AuthUser } from "@/types/next-auth";
 import { ChannelType, Server } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { Span } from "next/dist/trace";
+import { SocketIndicator } from "@/_components/socket-indicator";
 
 interface ServerMenuBtnProps {
   server: ServerWithMembersWithUsers;
@@ -55,6 +56,7 @@ const ServerHeader = ({ server, user, servers }: ServerMenuBtnProps) => {
           </div>
         </div>
         <div className="flex items-center ml-auto">
+          <SocketIndicator/>
           <button onClick={onToggle}>
             <User />
           </button>
