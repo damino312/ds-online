@@ -7,6 +7,7 @@ import { ServerWithMembersWithUsers } from "@/types/types";
 import { AuthUser } from "@/types/next-auth";
 import { ChannelType, Server } from "@prisma/client";
 import { useParams } from "next/navigation";
+import { Span } from "next/dist/trace";
 
 interface ServerMenuBtnProps {
   server: ServerWithMembersWithUsers;
@@ -17,10 +18,16 @@ interface ServerMenuBtnProps {
 const ServerHeader = ({ server, user, servers }: ServerMenuBtnProps) => {
   const { onToggle } = useMemberSidebar();
   const { channelId } = useParams();
+  const params = useParams();
+  const { memberId } = params;
 
   const channel = server.channels.find(
     (channel) => channel.channel_id === channelId
   );
+
+  const conversationMember = memberId
+    ? server.members.find((member) => member.member_id === memberId)
+    : null;
 
   return (
     <div className="h-12 bg-white dark:bg-[#313338] z-20 border-b-[1px]">
@@ -30,10 +37,21 @@ const ServerHeader = ({ server, user, servers }: ServerMenuBtnProps) => {
             <ServerMenuBtn server={server} user={user} servers={servers} />
           </div>
           <div className="flex items-center gap-2">
-            {channel?.channel_type === ChannelType.TEXT && <Frame size={18} />}
-            {channel?.channel_type === ChannelType.AUDIO && <Mic size={18} />}
-            {channel?.channel_type === ChannelType.VIDEO && <Video size={18} />}
-            <span>{channel?.channel_name}</span>
+            {!conversationMember ? (
+              <>
+                {" "}
+                {channel?.channel_type === ChannelType.TEXT && (
+                  <Frame size={18} />
+                )}
+                {channel?.channel_type === ChannelType.AUDIO && (
+                  <Mic size={18} />
+                )}
+                {channel?.channel_type === ChannelType.VIDEO && (
+                  <Video size={18} />
+                )}
+                <span>{channel?.channel_name}</span>
+              </>
+            ) : <span>{conversationMember.profile.user_name}</span>}
           </div>
         </div>
         <div className="flex items-center ml-auto">
