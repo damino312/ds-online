@@ -2,12 +2,14 @@ import { ServerWithMembersWithUsers } from "@/types/types";
 import { Channel, ChannelType } from "@prisma/client";
 import { create } from "zustand";
 
-export type ModalType = "createServer" | "invite" | "members" | 'createChannel' | 'deleteServer' | 'leaveServer' | 'editServer' | 'serverSearch' | 'deleteChannel' | 'editChannel';
+export type ModalType = "createServer" | "invite" | "members" | 'createChannel' | 'deleteServer' | 'leaveServer' | 'editServer' | 'serverSearch' | 'deleteChannel' | 'editChannel' | 'messageFile';
 
 interface ModalData {
   server?: ServerWithMembersWithUsers;
   channelType?: ChannelType;
   channel?: Channel;
+  apiUrl?: string;
+  query?: Record<string, string>;
 }
 
 interface ModalStore {

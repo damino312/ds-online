@@ -8,6 +8,7 @@ import EditChannelModal from "@/_components/modals/edit-channel-modal";
 import EditServerModal from "@/_components/modals/edit-server-modal";
 import LeaveServerModal from "@/_components/modals/leave-server-modal";
 import ManageMembersModal from "@/_components/modals/manage-members-modal";
+import MessageFileModal from "@/_components/modals/message-file-modal";
 import ServerSearchModal from "@/_components/modals/server-search-modal";
 import { useEffect, useState } from "react";
 
@@ -34,6 +35,7 @@ const ModalProvider = () => {
       <ServerSearchModal/>
       <DeleteChannelModal/>
       <EditChannelModal/>
+      <MessageFileModal/>
     </>
   );
 };
