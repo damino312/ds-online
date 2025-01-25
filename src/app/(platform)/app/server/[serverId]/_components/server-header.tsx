@@ -31,7 +31,7 @@ const ServerHeader = ({ server, user, servers }: ServerMenuBtnProps) => {
     : null;
 
   return (
-    <div className="h-12 bg-white dark:bg-[#313338] z-20 border-b-[1px]">
+    <div className="h-12 bg-white dark:bg-[#313338] z-20 border-b-[1px] shrink-0">
       <div className="flex items-center h-full px-4">
         <div className="flex items-center justify-center gap-2">
           <div className="lg:!hidden flex items-center justify-center">

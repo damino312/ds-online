@@ -20,7 +20,7 @@ const ServerSidebarMembers = ({ members }: ServerSidebarMembersProps) => {
   const { isOpen } = useMemberSidebar();
 
   const handleUserClick = ({ id }: { id: string }) => {
-    router.push(`/app/server/${params.serverId}/conversation/${id}`);
+    router.push(`/app/server/${params?.serverId}/conversation/${id}`);
   };
 
   if (!isOpen) return null;

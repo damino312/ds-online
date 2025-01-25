@@ -71,7 +71,7 @@ const ServerIdLayout = async ({
       <div className="h-full hidden lg:block">
         <ServerSidebar server={server} user={user} />
       </div>
-      <div className="flex flex-col w-full ">
+      <div className="flex flex-col h-full w-full ">
         <ServerHeader server={server} user={user} servers={servers} />
         <div className="flex h-full">
           <div className="w-full">{children}</div>

@@ -6,6 +6,7 @@ import ModalProvider from "./providers/modal-provider";
 import { ThemeProvider } from "./providers/theme-provider";
 import { SidebarProvider } from "@/_components/ui/sidebar";
 import { SocketProvider } from "./providers/socket-provider";
+import { QueryProvider } from "./providers/query-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -18,11 +19,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
     >
       <SessionProvider refetchInterval={5 * 60}>
         <SocketProvider>
-          <SidebarProvider>
-            <Toaster />
-            <ModalProvider />
-            {children}
-          </SidebarProvider>
+          <QueryProvider>
+            <SidebarProvider>
+              <Toaster />
+              <ModalProvider />
+              {children}
+            </SidebarProvider>
+          </QueryProvider>
         </SocketProvider>
       </SessionProvider>
     </ThemeProvider>
